@@ -47,6 +47,8 @@ def load_match_results(csv_data):
     
     Returns:
         pd.DataFrame: The loaded DataFrame.
+
+    df : DataFrame
     """
     
     df = pd.read_csv(StringIO(csv_data)) # Load the CSV data into a DataFrame
