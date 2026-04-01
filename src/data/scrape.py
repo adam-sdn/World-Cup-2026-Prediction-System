@@ -1,4 +1,5 @@
 import pandas as pd
+import requests as req
 
 """
 
@@ -16,6 +17,7 @@ Output: cleaned DataFrame ready for export.py to process.
 MATCH_RESULTS_URL = "https://raw.githubusercontent.com/martj42/international_results/master/results.csv"
 
 # Step 2 - Fetch the data using requests
+
 
 
 # Step 3 - Load it into a pandas DataFrame
