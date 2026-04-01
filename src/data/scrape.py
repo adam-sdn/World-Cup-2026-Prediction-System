@@ -1,3 +1,5 @@
+from urllib import response
+
 import pandas as pd
 import requests as req
 
@@ -17,7 +19,21 @@ Output: cleaned DataFrame ready for export.py to process.
 MATCH_RESULTS_URL = "https://raw.githubusercontent.com/martj42/international_results/master/results.csv"
 
 # Step 2 - Fetch the data using requests
-
+def fetch_match_results(url=MATCH_RESULTS_URL):
+    """Fetches the raw match results CSV data from the specified URL.
+    
+    Args:
+        url (str): The URL to fetch the CSV data from. Defaults to MATCH_RESULTS_URL.
+    
+    Returns:
+        str: The CSV data as a string.
+    
+    Raises:
+        HTTPError: If the HTTP request returned an unsuccessful status code.
+    """
+    response = req.get(url) # Fetch the CSV data from the URL
+    response.raise_for_status()# Check for HTTP errors
+    return response.text
 
 
 # Step 3 - Load it into a pandas DataFrame
