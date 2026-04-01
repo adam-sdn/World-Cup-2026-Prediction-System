@@ -2,6 +2,7 @@ from urllib import response
 
 import pandas as pd
 import requests as req
+from io import StringIO
 
 """
 
@@ -33,10 +34,23 @@ def fetch_match_results(url=MATCH_RESULTS_URL):
     """
     response = req.get(url) # Fetch the CSV data from the URL
     response.raise_for_status()# Check for HTTP errors
-    return response.text
+    
+    return response.text #input for def load_match_results
 
 
 # Step 3 - Load it into a pandas DataFrame
+def load_match_results(csv_data):
+    """Loads the CSV data into a pandas DataFrame.
+    
+    Args:
+        csv_data (str): The CSV data as a string.
+    
+    Returns:
+        pd.DataFrame: The loaded DataFrame.
+    """
+    
+    df = pd.read_csv(StringIO(csv_data)) # Load the CSV data into a DataFrame
+    return df
 
 # Step 4 - Filter from year 2000 onwards
 
