@@ -49,6 +49,8 @@ def load_match_results(csv_data):
         pd.DataFrame: The loaded DataFrame.
 
     df : DataFrame
+
+    StringIO : Converts the CSV string data into a file like object that can be read by pandas.
     """
     
     df = pd.read_csv(StringIO(csv_data)) # Load the CSV data into a DataFrame
@@ -85,4 +87,22 @@ def drop_city_country_columns(df):
 
     dropped_city_country = df.drop(columns=["city", "country"]) # Drop the 'city' and 'country' columns
     return dropped_city_country
+
+
 # Return the cleaned DataFrame
+def clean_match_results():
+    
+    """Cleans the match results DataFrame by fetching raw data, filtering by year, and dropping irrelevant columns.
+    
+    Returns:
+        pd.DataFrame: The cleaned DataFrame.
+    
+    """
+
+
+    csv_data = fetch_match_results() # Fetch the raw CSV data
+    df = load_match_results(csv_data) # Load the CSV data into a DataFrame
+    filtered_df = filter_match_results_by_year(df) # Filter matches from year 2000 onwards
+    cleaned_df = drop_city_country_columns(filtered_df) # Drop the 'city' and 'country' columns
+    
+    return cleaned_df # Return the cleaned DataFrame
