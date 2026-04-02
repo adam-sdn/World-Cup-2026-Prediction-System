@@ -52,9 +52,23 @@ def load_match_results(csv_data):
     """
     
     df = pd.read_csv(StringIO(csv_data)) # Load the CSV data into a DataFrame
-    return df
+    return df #input for def filter_match_results
 
 # Step 4 - Filter from year 2000 onwards
+def filter_match_results_by_year(df):
+    """Filters the DataFrame to include only matches from year 2000 onwards.
+    
+    Args:
+        df (pd.DataFrame): The DataFrame to filter.
+    
+    Returns:
+        pd.DataFrame: The filtered DataFrame with matches from year 2000 onwards.
+        
+        matches_2000_onwards : DataFrame
+    """
+    df['date'] = pd.to_datetime(df['date']) # Convert the 'date' column to datetime
+    matches_2000_onwards = df[df['date'].dt.year >= 2000] # Filter matches from year 2000 onwards
+    return matches_2000_onwards
 
 # Step 5 - Drop city and country columns
 
