@@ -52,7 +52,7 @@ def load_match_results(csv_data):
     """
     
     df = pd.read_csv(StringIO(csv_data)) # Load the CSV data into a DataFrame
-    return df #input for def filter_match_results
+    return df
 
 # Step 4 - Filter from year 2000 onwards
 def filter_match_results_by_year(df):
@@ -71,5 +71,6 @@ def filter_match_results_by_year(df):
     return matches_2000_onwards
 
 # Step 5 - Drop city and country columns
+def drop_city_country_columns(df)
 
 # Step 6 - Return the cleaned DataFrame
