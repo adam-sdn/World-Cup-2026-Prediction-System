@@ -16,10 +16,10 @@ Output: cleaned DataFrame ready for export.py to process.
 
 """
 
-# Step 1 - Define the URL of the raw CSV
+# Define the URL of the raw CSV
 MATCH_RESULTS_URL = "https://raw.githubusercontent.com/martj42/international_results/master/results.csv"
 
-# Step 2 - Fetch the data using requests
+# Fetch the data using requests
 def fetch_match_results(url=MATCH_RESULTS_URL):
     """Fetches the raw match results CSV data from the specified URL.
     
@@ -38,7 +38,7 @@ def fetch_match_results(url=MATCH_RESULTS_URL):
     return response.text #input for def load_match_results
 
 
-# Step 3 - Load it into a pandas DataFrame
+# Load into a pandas DataFrame
 def load_match_results(csv_data):
     """Loads the CSV data into a pandas DataFrame.
     
@@ -54,7 +54,7 @@ def load_match_results(csv_data):
     df = pd.read_csv(StringIO(csv_data)) # Load the CSV data into a DataFrame
     return df
 
-# Step 4 - Filter from year 2000 onwards
+# Filter from year 2000 onwards
 def filter_match_results_by_year(df):
     """Filters the DataFrame to include only matches from year 2000 onwards.
     
@@ -64,13 +64,25 @@ def filter_match_results_by_year(df):
     Returns:
         pd.DataFrame: The filtered DataFrame with matches from year 2000 onwards.
         
-        matches_2000_onwards : DataFrame
+        matches_2000_onwards : new DataFrame
     """
     df['date'] = pd.to_datetime(df['date']) # Convert the 'date' column to datetime
     matches_2000_onwards = df[df['date'].dt.year >= 2000] # Filter matches from year 2000 onwards
     return matches_2000_onwards
 
-# Step 5 - Drop city and country columns
-def drop_city_country_columns(df)
+# Drop city and country columns
+def drop_city_country_columns(df):
+    """Drops the 'city' and 'country' columns from the DataFrame.
+    
+    Args:
+        df (pd.DataFrame): The DataFrame to modify.
+    
+    Returns:
+        pd.DataFrame: The DataFrame with the 'city' and 'country' columns dropped.
+        
+        dropped_city_country : new DataFrame
+    """
 
-# Step 6 - Return the cleaned DataFrame
+    dropped_city_country = df.drop(columns=["city", "country"]) # Drop the 'city' and 'country' columns
+    return dropped_city_country
+# Return the cleaned DataFrame
