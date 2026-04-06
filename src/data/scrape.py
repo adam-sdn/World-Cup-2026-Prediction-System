@@ -1,9 +1,3 @@
-from urllib import response
-
-import pandas as pd
-import requests as req
-from io import StringIO
-
 """
 
 scrape.py
@@ -15,6 +9,10 @@ and drops irrelevant columns (city, country).
 Output: cleaned DataFrame ready for export.py to process.
 
 """
+
+import pandas as pd
+import requests as req
+from io import StringIO
 
 # Define the URL of the raw CSV
 MATCH_RESULTS_URL = "https://raw.githubusercontent.com/martj42/international_results/master/results.csv"
@@ -106,3 +104,11 @@ def clean_match_results():
     cleaned_df = drop_city_country_columns(filtered_df) # Drop the 'city' and 'country' columns
     
     return cleaned_df # Return the cleaned DataFrame
+
+
+
+#  Test the function
+if __name__ == "__main__":
+    df = clean_match_results()
+    print(df.head())
+    print(f"Total matches: {len(df)}")
