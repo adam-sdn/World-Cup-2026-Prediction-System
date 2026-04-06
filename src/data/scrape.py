@@ -68,6 +68,7 @@ def filter_match_results_by_year(df):
     """
     df['date'] = pd.to_datetime(df['date']) # Convert the 'date' column to datetime
     matches_2000_onwards = df[df['date'].dt.year >= 2000] # Filter matches from year 2000 onwards
+    matches_2000_onwards = matches_2000_onwards.reset_index(drop=True) # Reset the index after filtering
     return matches_2000_onwards
 
 # Drop city and country columns
