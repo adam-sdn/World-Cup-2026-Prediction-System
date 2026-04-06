@@ -84,8 +84,11 @@ def drop_city_country_columns(df):
         dropped_city_country : new DataFrame
     """
 
-    dropped_city_country = df.drop(columns=["city", "country"]) # Drop the 'city' and 'country' columns
-    return dropped_city_country
+    df= df.drop(columns=["city", "country"]) # Drop the 'city' and 'country' columns
+    df = df.fillna({'home_score': 0, 'away_score': 0}) # Fill NaN values in 'home_score' and 'away_score' with 0
+    df['home_score'] = df['home_score'].astype(int) # Convert 'home_score' to integer type
+    df['away_score'] = df['away_score'].astype(int) # Convert 'away
+    return df # Return the modified DataFrame
 
 
 # Return the cleaned DataFrame
