@@ -14,7 +14,7 @@ import pandas as pd
 import os
 
 
-PROCESSED_PATH = "dataset/processed/results_clean.csv"
+PROCESSED_PATH = "data/processed/results_clean.csv"
 
 
 def save_match_results(df, path=PROCESSED_PATH):
@@ -51,3 +51,17 @@ def load_processed_match_results(path=PROCESSED_PATH):
     df = pd.read_csv(path) # Load the processed results from CSV
     return df # Return the loaded DataFrame
 
+if __name__ == "__main__":
+    from scrape import clean_match_results
+    print("Processing match results...")
+
+    df = clean_match_results() # Get the cleaned match results DataFrame
+
+    save_match_results(df) # Save the cleaned DataFrame to CSV
+    print("Data processing complete.")
+
+    df_load = load_processed_match_results() # Load the processed match results back from CSV
+    print("Loaded processed match results:")
+
+    print(df_load.head()) # Print the first few rows of the loaded DataFrame to confirm it worked
+    print(f"Total matches: {len(df_load)}") # Print the total number of matches in the loaded DataFrame
