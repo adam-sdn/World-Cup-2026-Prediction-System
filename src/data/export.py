@@ -36,7 +36,7 @@ def save_match_results(df, path=PROCESSED_PATH):
     print(f"Processed match results saved to {path}") # Confirmation message
 
 
-def load_processed_results(path=PROCESSED_PATH):
+def load_processed_match_results(path=PROCESSED_PATH):
     """Loads the processed match results from a CSV file.
     
     Args:
