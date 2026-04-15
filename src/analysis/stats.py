@@ -58,3 +58,17 @@ WC_2026_COUNTRIES = [
     "England", "Croatia", "Ghana", "Panama"
 ]
 
+
+def get_team_matches(df, team):
+    """Returns a DataFrame of matches involving the specified team.
+    
+    Args:
+        df (pd.DataFrame): The DataFrame containing match data.
+        team (str): The name of the team to filter by.
+    
+    Returns:
+        pd.DataFrame: A DataFrame of matches involving the specified team.
+    """
+    team_matches = df[(df["home_team"] == team) | (df["away_team"] == team)] # Filter matches where the team is either home or away
+    return team_matches # Return the filtered DataFrame
+
