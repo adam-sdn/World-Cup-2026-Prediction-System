@@ -15,7 +15,7 @@ from data.export import load_processed_match_results
 
 
 # Constants for stats.py
-STATS_FROM_2018 = 2018
+STATS_FROM_2014 = 2014
 
 
 # Tournament weightings for statistical analysis
