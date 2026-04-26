@@ -19,7 +19,7 @@ STATS_FROM_2014 = 2014
 
 
 # Tournament weightings for statistical analysis
-OURNAMENT_WEIGHINGS = {
+TOURNAMENT_WEIGHTS= {
     "FIFA World Cup": 3,
     "UEFA Euro": 3,
     "Copa América": 3,
@@ -98,15 +98,40 @@ def assign_tournament_weight(df):
     Returns:
         pd.DataFrame: The DataFrame with a new 'tournament_weight' column.
     """
-    weight_category_3 = df[(df['tournament'] == "FIFA World Cup") | (df['tournament'] == "UEFA Euro") | (df['tournament'] == "Copa América") | (df['tournament'] == "Africa Cup of Nations")] # Define category 3 tournaments
-    weight_category_2 = df[(df['tournament'] == "FIFA World Cup qualification") | (df['tournament'] == "UEFA Euro qualification") | (df['tournament'] == "UEFA Nations League")] # Define category 2 tournaments
-    weight_category_1 = df[df['tournament'] == "Friendly"] # Define category 1 tournaments
-
-    weight_category_3['tournament_weight'] = 3 # Assign weight 3 to category 3 tournaments
-    weight_category_2['tournament_weight'] = 2 # Assign weight 2 to category 2 tournaments
-    weight_category_1['tournament_weight'] = 1 # Assign weight 1 to category 1 tournaments
-
-    weighted_df = pd.concat([weight_category_3, weight_category_2, weight_category_1]) # Combine the weighted categories back into a single DataFrame
+    df['tournament_weight'] = df['tournament'].map(TOURNAMENT_WEIGHTS).fillna(1) # Map tournament types to weights, defaulting to 1 for unknown types
+    return df # Return the DataFrame with the new 'tournament_weight' column
 
 
-    return weighted_df # Return the DataFrame with tournament weights assigned
+def get_recent_form(df,team, n=5):
+    """Calculates the recent form of a team based on the last n matches (5).
+    
+    Args:
+        df (pd.DataFrame): The DataFrame containing match data.
+        team (str): The name of the team to calculate form for.
+        n (int): The number of recent matches to consider for form calculation.
+    
+    Returns:
+        str: A string representing the recent form (e.g., "WWLWD").
+    """
+    team_matches = get_team_matches(df, team) # Get matches involving the specified team
+    team_matches = team_matches.sort_values(by='date', ascending=False) # Sort matches by date in descending order
+    recent_matches = team_matches.tail(n) # Get the last n matches
+
+    form = ""
+    for _, match in recent_matches.iterrows():
+        if match['home_team'] == team:
+            if match['home_score'] > match['away_score']:
+                form += "W" # Win
+            elif match['home_score'] < match['away_score']:
+                form += "L" # Loss
+            else:
+                form += "D" # Draw
+        else:
+            if match['away_score'] > match['home_score']:
+                form += "W" # Win
+            elif match['away_score'] < match['home_score']:
+                form += "L" # Loss
+            else:
+                form += "D" # Draw
+
+    return form # Return the recent form string
