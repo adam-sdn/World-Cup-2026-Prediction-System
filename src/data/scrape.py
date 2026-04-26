@@ -106,6 +106,14 @@ def clean_match_results():
     df = load_match_results(csv_data) # Load the CSV data into a DataFrame
     filtered_df = filter_match_results_by_year(df) # Filter matches from year 2000 onwards
     cleaned_df = drop_city_country_columns(filtered_df) # Drop the 'city' and 'country' columns
+
+        # Remove unplayed future matches
+    today = pd.Timestamp.today()
+    cleaned_df = cleaned_df[~(
+        (pd.to_datetime(cleaned_df['date']) > today) & 
+        (cleaned_df['home_score'] == 0) & 
+        (cleaned_df['away_score'] == 0)
+    )]
     
     return cleaned_df # Return the cleaned DataFrame
 

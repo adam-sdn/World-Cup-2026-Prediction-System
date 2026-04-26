@@ -12,7 +12,7 @@ Output: data/processed/results_clean.csv
 
 import pandas as pd
 import os
-
+from src.data.scrape import clean_match_results
 
 PROCESSED_PATH = "data/processed/results_clean.csv"
 
@@ -52,7 +52,7 @@ def load_processed_match_results(path=PROCESSED_PATH):
     return df # Return the loaded DataFrame
 
 if __name__ == "__main__":
-    from scrape import clean_match_results
+    from src.data.scrape import clean_match_results
     print("Processing match results...")
 
     df = clean_match_results() # Get the cleaned match results DataFrame

@@ -215,12 +215,51 @@ def calculate_team_stats(df, team):
     }
 
 
+
+
+
+def calculate_all_teams(df):
+    """Calculates statistics for all teams in the DataFrame.
+    
+    Args:
+        df (pd.DataFrame): The DataFrame containing match data.
+    
+    Returns:
+        pd.DataFrame: A DataFrame containing statistics for all 48 qualified teams.
+    """
+    results = []
+
+    for team in WC_2026_COUNTRIES:
+        stats = calculate_team_stats(df, team)
+        results.append(stats)
+    
+    # Convert the list of dictionaries to a DataFrame for easier analysis and visualization
+    df_team_stats = pd.DataFrame(results,index=WC_2026_COUNTRIES)
+    
+    return df_team_stats
+
+
+
+
+
+
+
 if __name__ == "__main__":
+    import sys
+    import os
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
     from src.data.export import load_processed_match_results
-    
+
     df = load_processed_match_results()
-    
-    stats = calculate_team_stats(df, "Brazil")
-    for key, value in stats.items():
-        print(f"{key}: {value}")
+
+    print("Calculating stats for all 48 teams...")
+    all_stats = calculate_all_teams(df)
+    print(all_stats)
+    print(f"\nTotal teams: {len(all_stats)}")
+
+    print("\nBrazil recent matches:")
+    matches = get_team_matches(df, "Brazil")
+    matches = matches.sort_values(by='date', ascending=False)
+    print(matches[['date', 'home_team', 'away_team', 'home_score', 'away_score']].head(10))
 
