@@ -11,7 +11,7 @@ Defines constants for statistical analysis, such as tournament weightings.
 
 
 import pandas as pd
-from data.export import load_processed_match_results
+from src.data.export import load_processed_match_results
 
 
 # Constants for stats.py
@@ -182,14 +182,14 @@ def calculate_team_stats(df, team):
 
     #AVERAGE OUTCOMES
 
-    average_goals_scored = goals_scored / total_matches_played if total_matches_played > 0 else 0 # Calculate average goals scored per match
-    average_goals_conceded = goals_conceded / total_matches_played if total_matches_played > 0 else 0 # Calculate average goals conceded per match
+    average_goals_scored = round(goals_scored / total_matches_played, 2) if total_matches_played > 0 else 0 # Calculate average goals scored per match
+    average_goals_conceded = round(goals_conceded / total_matches_played, 2) if total_matches_played > 0 else 0 # Calculate average goals conceded per match
 
     #RATES
 
-    win_rate = total_wins / total_matches_played if total_matches_played > 0 else 0 # Calculate win rate
-    draw_rate = total_draws / total_matches_played if total_matches_played > 0 else 0 # Calculate draw rate
-    loss_rate = total_losses / total_matches_played if total_matches_played > 0 else 0 # Calculate loss rate
+    win_rate = round(total_wins / total_matches_played, 2) if total_matches_played > 0 else 0 # Calculate win rate
+    draw_rate = round(total_draws / total_matches_played, 2) if total_matches_played > 0 else 0 # Calculate draw rate
+    loss_rate = round(total_losses / total_matches_played, 2) if total_matches_played > 0 else 0 # Calculate loss rate
 
     clean_sheet = len(matches[((matches['home_team'] == team) & (matches['away_score'] == 0)) | ((matches['away_team'] == team) & (matches['home_score'] == 0))]) # Calculate matches where the team kept a clean sheet
     
@@ -213,3 +213,14 @@ def calculate_team_stats(df, team):
         "Failure to Score": failure_to_score,
         "Recent Form": team_form
     }
+
+
+if __name__ == "__main__":
+    from src.data.export import load_processed_match_results
+    
+    df = load_processed_match_results()
+    
+    stats = calculate_team_stats(df, "Brazil")
+    for key, value in stats.items():
+        print(f"{key}: {value}")
+
