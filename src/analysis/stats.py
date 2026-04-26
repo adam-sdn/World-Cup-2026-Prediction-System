@@ -115,7 +115,7 @@ def get_recent_form(df,team, n=5):
     """
     team_matches = get_team_matches(df, team) # Get matches involving the specified team
     team_matches = team_matches.sort_values(by='date', ascending=False) # Sort matches by date in descending order
-    recent_matches = team_matches.tail(n) # Get the last n matches
+    recent_matches = team_matches.head(n) # Get the last n matches
 
     form = ""
     for _, match in recent_matches.iterrows():
@@ -135,3 +135,81 @@ def get_recent_form(df,team, n=5):
                 form += "D" # Draw
 
     return form # Return the recent form string
+
+
+def calculate_team_stats(df, team):
+    """Calculates various statistics for a given team.
+    
+    Args:
+        df (pd.DataFrame): The DataFrame containing match data.
+        team (str): The name of the team to calculate statistics for.
+        
+    Returns:
+        dict: A dictionary containing the calculated statistics for the team.
+    """
+    #MATCH OUTCOMES
+
+    # SETUP — filter and weight the data first
+    matches = get_team_matches(df, team)
+    matches = filter_by_year(matches)
+    matches = assign_tournament_weight(matches)
+
+
+    total_matches_played = len(matches) # Get total matches involving the specified team
+
+    # Wins home + wins away = total wins
+    total_wins = len(matches[((matches['home_team'] == team) & (matches['home_score'] > matches['away_score'])) | ((matches['away_team'] == team) & (matches['away_score'] > matches['home_score']))])
+
+    # Draws home + draws away  +  0-0 matches = total draws
+    total_draws = len(matches[((matches['home_team'] == team) | (matches['away_team'] == team)) & (matches['home_score'] == matches['away_score'])]) # Get total draws involving the specified team
+
+    # Losses home + losses away = total losses
+    total_losses = len(matches[((matches['home_team'] == team) & (matches['home_score'] < matches['away_score'])) | ((matches['away_team'] == team) & (matches['away_score'] < matches['home_score']))]) # Get total losses involving the specified team
+
+
+    #GOALS
+
+    # Goals scored home + goals scored away = total goals scored
+    goals_scored = matches[matches['home_team'] == team]['home_score'].sum() + matches[matches['away_team'] == team]['away_score'].sum()
+
+    # Goals conceded home + goals conceded away = total goals conceded
+    goals_conceded = matches[matches['home_team'] == team]['away_score'].sum() + matches[matches['away_team'] == team]['home_score'].sum()
+
+    
+    # Goal difference
+    goal_difference = goals_scored - goals_conceded
+
+
+    #AVERAGE OUTCOMES
+
+    average_goals_scored = goals_scored / total_matches_played if total_matches_played > 0 else 0 # Calculate average goals scored per match
+    average_goals_conceded = goals_conceded / total_matches_played if total_matches_played > 0 else 0 # Calculate average goals conceded per match
+
+    #RATES
+
+    win_rate = total_wins / total_matches_played if total_matches_played > 0 else 0 # Calculate win rate
+    draw_rate = total_draws / total_matches_played if total_matches_played > 0 else 0 # Calculate draw rate
+    loss_rate = total_losses / total_matches_played if total_matches_played > 0 else 0 # Calculate loss rate
+
+    clean_sheet = len(matches[((matches['home_team'] == team) & (matches['away_score'] == 0)) | ((matches['away_team'] == team) & (matches['home_score'] == 0))]) # Calculate matches where the team kept a clean sheet
+    
+    failure_to_score = len(matches[(matches['home_team'] == team) & (matches['home_score'] == 0)]) + len(matches[(matches['away_team'] == team) & (matches['away_score'] == 0)]) # Calculate matches where the team failed to score
+    team_form = get_recent_form(df, team) # Get recent form of the team
+
+    return {
+        "Total Matches Played": total_matches_played,
+        "Total Wins": total_wins,
+        "Total Draws": total_draws,
+        "Total Losses": total_losses,
+        "Goals Scored": goals_scored,
+        "Goals Conceded": goals_conceded,
+        "Goal Difference": goal_difference,
+        "Average Goals Scored": average_goals_scored,
+        "Average Goals Conceded": average_goals_conceded,
+        "Win Rate": win_rate,
+        "Draw Rate": draw_rate,
+        "Loss Rate": loss_rate,
+        "Clean Sheets": clean_sheet,
+        "Failure to Score": failure_to_score,
+        "Recent Form": team_form
+    }
