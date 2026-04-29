@@ -191,6 +191,6 @@ This project is to build something that mirrors real-world analytics platforms.
 I’m actively seeking internship opportunities in software engineering, data, or AI focused roles
 
 If this project interests you, feel free to reach out or connect.
-Linkedin : https://www.linkedin.com/in/adam-s-7694a335b/
+Linkedin : https://www.linkedin.com/in/adam-sdn
 
 
