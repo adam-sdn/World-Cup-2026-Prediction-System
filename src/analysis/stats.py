@@ -231,10 +231,13 @@ def calculate_all_teams(df):
 
     for team in WC_2026_COUNTRIES:
         stats = calculate_team_stats(df, team)
+        stats["Team"] = team # Add the team name as a column in the stats dictionary
         results.append(stats)
     
     # Convert the list of dictionaries to a DataFrame for easier analysis and visualization
     df_team_stats = pd.DataFrame(results,index=WC_2026_COUNTRIES)
+    ordered_column = ["Team"] + [col for col in df_team_stats.columns if col != "Team"] # Ensure 'Team' is the first column
+    df_team_stats = df_team_stats[ordered_column] # Reorder the columns in the
     
     return df_team_stats
 

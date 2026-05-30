@@ -1,20 +1,23 @@
 """
 export.py
 
-Handles saving and loading processed match data.
+Handles saving and loading processed match and team statistics data to and from CSV files.
+
 Saves cleaned DataFrame to data/processed/results_clean.csv
+
 and loads it back for use by stats.py, predictor.py, and app.py.
 
 Output: data/processed/results_clean.csv
 
 """
 
-
+from src.data.scrape import clean_match_results
 import pandas as pd
 import os
-from src.data.scrape import clean_match_results
+
 
 PROCESSED_PATH = "data/processed/results_clean.csv"
+TEAM_STATS_PATH = "data/processed/team_stats.csv"
 
 
 def save_match_results(df, path=PROCESSED_PATH):
@@ -50,6 +53,48 @@ def load_processed_match_results(path=PROCESSED_PATH):
     
     df = pd.read_csv(path) # Load the processed results from CSV
     return df # Return the loaded DataFrame
+
+
+def save_team_stats(df, path=TEAM_STATS_PATH):
+    """Saves the team statistics DataFrame to a CSV file.
+    
+    Args:
+        df (pd.DataFrame): The team statistics DataFrame to save.
+        path (str): The file path to save the CSV. Defaults to TEAM_STATS_PATH.
+    
+    Returns:
+        None
+    """
+
+    #Getting the directory from the team stats path
+    folder = os.path.dirname(path)
+
+    #Ensure the directory exists before saving the team stats CSV
+    os.makedirs(folder , exist_ok=True)
+
+
+    # Save the team stats DataFrame to CSV without the index
+    df.to_csv(path, index=False)
+
+    print(f"Team statistics saved to {path}") # Confirmation message
+
+
+
+def load_team_stats(path=TEAM_STATS_PATH):
+    """Loads the team statistics from a CSV file.
+    
+    Args:
+        path (str): The file path to load the CSV from. Defaults to TEAM_STATS_PATH.
+    
+    Returns:
+        pd.DataFrame: The loaded team statistics DataFrame.
+    """
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"Team statistics file not found at {path}. Please run the team stats calculation pipeline first.")
+    
+    df = pd.read_csv(path) # Load the team statistics from CSV
+    return df # Return the loaded team statistics DataFrame
+
 
 if __name__ == "__main__":
     from src.data.scrape import clean_match_results
