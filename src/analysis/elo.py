@@ -24,4 +24,18 @@ import os
 from src.data.export import load_processed_match_results
 
 
+#Initilaising the base value for ELO Ratings
 ELO_BASE_RATING = 1000
+
+
+#K-Factors for different match types based on their value and global importance. Higher K-Factor means more impact on ELO ratings.
+K_FACTORS = {
+    "FIFA World Cup": 60,
+    "UEFA Euro": 60,
+    "Copa América": 60,
+    "Africa Cup of Nations": 60,
+    "FIFA World Cup qualification": 40,
+    "UEFA Euro qualification": 40,
+    "UEFA Nations League": 40,
+    "Friendly": 20
+}
