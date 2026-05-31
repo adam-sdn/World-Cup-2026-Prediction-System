@@ -96,6 +96,9 @@ def load_team_stats(path=TEAM_STATS_PATH):
     return df # Return the loaded team statistics DataFrame
 
 
+    
+
+
 if __name__ == "__main__":
     from src.data.scrape import clean_match_results
     print("Processing match results...")
