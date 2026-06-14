@@ -8,7 +8,7 @@ Gets data from the results_clean.csv file from data\processed created by export.
 
 
 ELO Rating Formula : 
-New Rating = Old Rating + K × (Actual Result - Expected Result)
+New Rating = Old Rating + K x (Actual Result - Expected Result)
 
 Output: the following is generated :
     
@@ -23,6 +23,9 @@ import pandas as pd
 import os
 from src.data.export import load_processed_match_results
 
+
+ELO_RATINGS_PATH = "data/processed/elo_rating.csv"
+ELO_HISTORY_PATH = "data/processed/elo_history.csv"
 
 #Initilaising the base value for ELO Ratings
 ELO_BASE_RATING = 1000
